@@ -1,36 +1,131 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# compviz
 
-## Getting Started
+Turn a Docker Compose file into an architecture diagram. Paste a `compose.yaml`, and compviz draws each service as a node and each dependency as an edge. You can pan and zoom the preview and export it as SVG, PNG or PDF.
 
-First, run the development server:
+Live at [compviz.a2coder.dev](https://compviz.a2coder.dev). Part of a2coder labs, by [@a2coder](https://github.com/a2-coder).
+
+## How it reads your file
+
+- Every entry under `services:` becomes a **node**. Volumes, networks and ports show as details on their service's node, not as nodes of their own.
+- `depends_on` and `links` become **edges**, drawn from the dependent service to the one it uses (`api → db` reads "api uses db").
+- Well-known images (Postgres, Redis, RabbitMQ, Traefik and 21 more) get their logo and a **category**: database, cache, queue, search, storage, proxy, observability or service. compviz recognises an app by its image, never by its service name.
+- compviz only reads the text you paste. It doesn't follow includes, read `.env` files or interpolate variables.
+
+## Customising the diagram
+
+You can customise the diagram from inside the Compose file, so it still runs with `docker compose`. The editor autocompletes every key below.
+
+**Diagram settings** go in a top-level `x-compviz` block:
+
+| Key | Values |
+| --- | --- |
+| `title` | Diagram title |
+| `direction` | `TB` (default), `LR`, `RL`, `BT` |
+
+**Service annotations** are `compviz.*` labels on a service:
+
+| Label | Effect |
+| --- | --- |
+| `compviz.name` | Display name |
+| `compviz.type` | Category: `database`, `cache`, `queue`, `search`, `storage`, `proxy`, `observability`, `service` |
+| `compviz.icon` | Use a known app's logo, for example `postgres` |
+| `compviz.highlight` | `"true"` makes the node stand out |
+| `compviz.hidden` | `"true"` leaves the service out of the diagram |
+
+**Edge annotations** are `compviz.edge.<target>.*` labels on the source service. If `depends_on` doesn't already declare the edge, the annotation creates it.
+
+| Label | Effect |
+| --- | --- |
+| `compviz.edge.<target>.label` | Edge label |
+| `compviz.edge.<target>.animated` | `"true"` animates the edge |
+| `compviz.edge.<target>.hidden` | `"true"` hides the edge |
+
+```yaml
+x-compviz:
+  title: Storefront
+  direction: LR
+
+services:
+  api:
+    build: ./api
+    depends_on: [db]
+    labels:
+      compviz.name: Orders API
+      compviz.highlight: "true"
+      compviz.edge.db.label: SQL
+      compviz.edge.events.label: events
+      compviz.edge.events.animated: "true"
+  db:
+    image: postgres:16-alpine
+  events:
+    image: rabbitmq:3-management
+```
+
+compviz shows a warning for an unknown key or an invalid value instead of failing. See [docs/adr/0001-annotation-syntax.md](docs/adr/0001-annotation-syntax.md) for why the syntax works this way, and [GLOSSARY.md](GLOSSARY.md) for the terms.
+
+## SVG API (self-hosted)
+
+A self-hosted copy can expose an HTTP endpoint that turns a Compose file into the same SVG you get from the Export button, so you can generate diagrams from scripts or CI. **It's off by default**, and it isn't enabled on compviz.a2coder.dev. To turn it on, set `COMPVIZ_API=true` in the server's environment:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
+bun run build
+```
+
+```bash
+COMPVIZ_API=true bun run start
+```
+
+`COMPVIZ_API=true bun dev` works too. Any value other than `true` leaves the endpoint off.
+
+**`POST /api/svg`**
+
+- **Body:** the Compose file as raw YAML text, up to 1MB. `x-compviz` settings and `compviz.*` annotations apply as in the app.
+- **Query:** `theme=dark` for the dark palette. The default is `light`.
+- **Response:** `200` with `Content-Type: image/svg+xml`. The SVG is standalone: JetBrains Mono is embedded, so it renders the same anywhere, and it carries the "Made with compviz" line like every Export.
+
+| Status | When |
+| --- | --- |
+| `400` | The YAML doesn't parse, or the file has no services. The body is the error message. |
+| `404` | The API is off (`COMPVIZ_API` isn't `true`). |
+| `405` | Any method other than `POST`. |
+| `413` | The body is over 1MB. |
+
+Warnings shown in the editor (an unknown annotation key, an invalid value) aren't reported by the API. Those keys are ignored and the diagram still renders.
+
+```bash
+curl --fail --data-binary @compose.yaml -o diagram.svg http://localhost:3000/api/svg
+```
+
+```bash
+curl --fail --data-binary @compose.yaml -o diagram-dark.svg "http://localhost:3000/api/svg?theme=dark"
+```
+
+The endpoint has no authentication or rate limiting. If you enable it on a public host, put it behind something that does.
+
+## Development
+
+Built with Next.js 16, Tailwind CSS v4 and shadcn/ui (Base UI), with a CodeMirror 6 editor and dagre for layout. Use [bun](https://bun.sh):
+
+```bash
+bun install
+```
+
+```bash
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+```bash
+bun test
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+bun run lint
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+bun run build
+```
 
-## Learn More
+`bun dev` serves the app at [http://localhost:3000](http://localhost:3000). The Compose-to-diagram conversion in `lib/compose/` is pure and unit-tested; see [CLAUDE.md](CLAUDE.md) for the code layout and design rules.
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Copyright © 2026 Arjun Palakkazhi. All rights reserved.

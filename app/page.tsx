@@ -1,12 +1,9 @@
 import { IconBrandGithub } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
+import { ComposeDiagram } from "@/components/compose-diagram";
 import { Logo } from "@/components/logo";
 import { buttonVariants } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "@/components/ui/empty";
-import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Separator } from "@/components/ui/separator";
-import { Textarea } from "@/components/ui/textarea";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 export default function Home() {
@@ -43,35 +40,8 @@ export default function Home() {
         </Tooltip>
       </header>
       <Separator />
-      <main className="mx-auto grid w-full max-w-5xl flex-1 gap-4 p-2 md:p-4 lg:grid-cols-2 lg:gap-8 lg:p-8">
-        <Card>
-          <CardHeader className="border-b">
-            <CardTitle>Compose</CardTitle>
-            <CardDescription>Paste a Docker Compose file</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <FieldGroup>
-              <Field>
-                <FieldLabel htmlFor="compose">compose.yaml</FieldLabel>
-                <Textarea id="compose" className="min-h-80" placeholder="services:" />
-              </Field>
-            </FieldGroup>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="border-b">
-            <CardTitle>Diagram</CardTitle>
-            <CardDescription>See how the services connect</CardDescription>
-          </CardHeader>
-          <CardContent className="flex-1">
-            <Empty className="aspect-square">
-              <EmptyHeader>
-                <EmptyTitle>No diagram yet</EmptyTitle>
-                <EmptyDescription>Paste a Compose file to draw it</EmptyDescription>
-              </EmptyHeader>
-            </Empty>
-          </CardContent>
-        </Card>
+      <main className="min-h-0 flex-1">
+        <ComposeDiagram />
       </main>
       <Separator />
       <footer className="p-2 text-center text-xs text-muted-foreground">
