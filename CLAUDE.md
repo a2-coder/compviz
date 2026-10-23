@@ -45,3 +45,17 @@ compviz follows the **A2Coder Labs** design system (claude.ai artifact `https://
 
 - `public/logo.svg`: full mark (orange-500 top container linked to two `primary` containers). Its neutral colour switches via `prefers-color-scheme`, not the `.dark` class; in the app use `components/logo.tsx`, whose neutral parts follow `currentColor` (`text-primary`) so they switch with `.dark`. Keep the two in sync.
 - `app/icon.svg`: simplified favicon (no door slats or rings) for 16–32px; picked up automatically by the Next.js `app/icon` convention.
+
+## Agent skills
+
+### Issue tracker
+
+Issues live in GitHub Issues for a2-coder/compviz (via `gh`). See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+The five default labels: needs-triage, needs-info, ready-for-agent, ready-for-human, wontfix. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context: `GLOSSARY.md` and `docs/adr/` at the repo root. See `docs/agents/domain.md`.
