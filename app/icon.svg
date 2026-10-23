@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- favicon: logo simplified for 16–32px (no door slats or rings, wider face gaps) -->
+  <style>
+    .accent { fill: #ff6900; stroke: #ff6900; }
+    .ink { fill: #18181b; stroke: #18181b; }
+    @media (prefers-color-scheme: dark) { .ink { fill: #e4e4e7; stroke: #e4e4e7; } }
+  </style>
+  <defs>
+    <mask id="cube-cut" maskUnits="userSpaceOnUse" x="-8" y="-8" width="16" height="16">
+      <path d="M0-6.5 6.5-3.25v6.5L0 6.5-6.5 3.25v-6.5z" fill="#fff" stroke="#fff" stroke-width=".8" stroke-linejoin="round"/>
+      <path d="M0 0-8-4M0 0 8-4M0 0v8" stroke="#000" stroke-width="1"/>
+    </mask>
+    <path id="cube" d="M0-6.5 6.5-3.25v6.5L0 6.5-6.5 3.25v-6.5z" stroke-width=".8" stroke-linejoin="round" mask="url(#cube-cut)"/>
+  </defs>
+  <path class="ink" d="M10 12.5 8.4 13.3Q7.5 13.8 7.5 15V19M22 12.5l1.6.8q.9.5.9 1.7V19" fill="none" stroke-width="1.6" stroke-linecap="round"/>
+  <use href="#cube" class="ink" x="7.5" y="23.5"/>
+  <use href="#cube" class="ink" x="24.5" y="23.5"/>
+  <use href="#cube" class="accent" x="16" y="8.5"/>
+</svg>
