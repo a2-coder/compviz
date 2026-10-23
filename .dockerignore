@@ -1,0 +1,11 @@
+.git
+.github
+.next
+.claude
+node_modules
+docs
+*.md
+*.tsbuildinfo
+next-env.d.ts
+.env*
+Dockerfile
