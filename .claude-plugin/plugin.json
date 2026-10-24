@@ -1,0 +1,7 @@
+{
+  "name": "compviz",
+  "description": "Annotate Docker Compose files for compviz architecture diagrams.",
+  "author": { "name": "a2coder", "url": "https://github.com/a2-coder" },
+  "homepage": "https://compviz.a2coder.dev",
+  "repository": "https://github.com/a2-coder/compviz"
+}

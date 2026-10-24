@@ -1,0 +1,11 @@
+{
+  "name": "compviz",
+  "owner": { "name": "a2coder", "url": "https://github.com/a2-coder" },
+  "plugins": [
+    {
+      "name": "compviz",
+      "source": "./",
+      "description": "Annotate Docker Compose files for compviz architecture diagrams."
+    }
+  ]
+}

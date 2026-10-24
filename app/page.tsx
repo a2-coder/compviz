@@ -1,6 +1,7 @@
 import { IconBrandGithub } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
 import { ComposeDiagram } from "@/components/compose-diagram";
+import { Guide } from "@/components/guide";
 import { Logo } from "@/components/logo";
 import { buttonVariants } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -21,23 +22,25 @@ export default function Home() {
             </p>
           </div>
         </div>
-        <Tooltip>
-          <TooltipTrigger
-            render={
-              // ponytail: repo URL assumed from the other a2coder labs repos
-              <a
-                href="https://github.com/a2-coder/compviz"
-                target="_blank"
-                rel="noreferrer"
-                aria-label="Open project on GitHub"
-                className={cn(buttonVariants({ variant: "outline", size: "icon" }))}
-              />
-            }
-          >
-            <IconBrandGithub />
-          </TooltipTrigger>
-          <TooltipContent>Open project on GitHub</TooltipContent>
-        </Tooltip>
+        <div className="flex items-center gap-2">
+          <Guide />
+          <Tooltip>
+            <TooltipTrigger
+              render={
+                <a
+                  href="https://github.com/a2-coder/compviz"
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="Open project on GitHub"
+                  className={cn(buttonVariants({ variant: "outline", size: "icon" }))}
+                />
+              }
+            >
+              <IconBrandGithub />
+            </TooltipTrigger>
+            <TooltipContent>Open project on GitHub</TooltipContent>
+          </Tooltip>
+        </div>
       </header>
       <Separator />
       <main className="min-h-0 flex-1">

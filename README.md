@@ -63,6 +63,36 @@ services:
 
 compviz shows a warning for an unknown key or an invalid value instead of failing. See [docs/adr/0001-annotation-syntax.md](docs/adr/0001-annotation-syntax.md) for why the syntax works this way, and [GLOSSARY.md](GLOSSARY.md) for the terms.
 
+## Convert a Compose File With an Agent
+
+compviz ships a `compviz:convert` agent skill that annotates an existing Compose File for you: it adds `compviz.*` labels and an `x-compviz` block, infers edges `depends_on` misses (from URLs like `DATABASE_URL=postgres://db:5432`), and hides one-shot jobs, without changing how the file runs. The Guide (book icon in the app header) has the same instructions as a prompt you can paste into any AI chat.
+
+**Claude Code.** Install the plugin from this repository, in one step on Claude Code 2.1.275 or later:
+
+```text
+/plugin install compviz --marketplace a2-coder/compviz
+```
+
+On older versions, add the marketplace first:
+
+```text
+/plugin marketplace add a2-coder/compviz
+```
+
+```text
+/plugin install compviz@compviz
+```
+
+Then ask "convert my compose file for compviz", or run `/compviz:convert` (optionally with a path, for example `/compviz:convert deploy/compose.yaml`).
+
+**Other agents** (Cursor, Codex, Gemini CLI, GitHub Copilot and others that read `SKILL.md` skills). Install with the [skills](https://skills.sh) CLI:
+
+```bash
+npx skills add a2-coder/compviz
+```
+
+Or copy [skills/convert/SKILL.md](skills/convert/SKILL.md) into your agent's skills folder, for example `.claude/skills/convert/SKILL.md` for a single project.
+
 ## SVG API (self-hosted)
 
 A self-hosted copy can expose an HTTP endpoint that turns a Compose file into the same SVG you get from the Export button, so you can generate diagrams from scripts or CI. **It's off by default**, and it isn't enabled on compviz.a2coder.dev. To turn it on, set `COMPVIZ_API=true` in the server's environment:
