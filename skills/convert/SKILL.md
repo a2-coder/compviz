@@ -39,7 +39,7 @@ compviz (https://compviz.a2coder.dev) turns a Compose File into an architecture 
 | `compviz.highlight` | `"true"` on the one or two core services the diagram is about |
 | `compviz.hidden` | `"true"` on one-shot or tooling containers (migrations, seeders, init jobs, admin UIs) that clutter the diagram |
 
-Known Apps (values for `compviz.icon`), recognised from the image's repository name: postgres, mysql, mariadb, mongodb, cockroachdb, clickhouse, cassandra, redis, valkey, memcached, rabbitmq, kafka, nats, elasticsearch, opensearch, meilisearch, typesense, minio, nginx, traefik, caddy, haproxy, grafana, prometheus, jaeger.
+Known Apps (values for `compviz.icon`), recognised from the image's repository name: postgres, mysql, mariadb, mongodb, cockroachdb, clickhouse, cassandra, redis, valkey, memcached, rabbitmq, kafka, nats, elasticsearch, opensearch, meilisearch, typesense, minio, nginx, traefik, caddy, haproxy, httpd, html, react, nextjs, vue, nuxt, angular, svelte, nodejs, bun, deno, express, nestjs, python, django, flask, fastapi, golang, rust, java, spring, dotnet, ruby, rails, php, laravel, wordpress, graphql, apollo, hasura, grafana, prometheus, jaeger.
 
 Categories (values for `compviz.type`): database, cache, queue, search, storage, proxy, observability, service.
 

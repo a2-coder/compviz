@@ -8,7 +8,7 @@ Live at [compviz.a2coder.dev](https://compviz.a2coder.dev). Part of a2coder labs
 
 - Every entry under `services:` becomes a **node**. Volumes, networks and ports show as details on their service's node, not as nodes of their own.
 - `depends_on` and `links` become **edges**, drawn from the dependent service to the one it uses (`api → db` reads "api uses db").
-- Well-known images (Postgres, Redis, RabbitMQ, Traefik and 21 more) get their logo and a **category**: database, cache, queue, search, storage, proxy, observability or service. compviz recognises an app by its image, never by its service name.
+- Well-known images (Postgres, Redis, RabbitMQ, Traefik and 51 more) get their logo and a **category**: database, cache, queue, search, storage, proxy, observability or service. compviz recognises an app by its image, never by its service name.
 - compviz only reads the text you paste. It doesn't follow includes, read `.env` files or interpolate variables.
 
 ## Customising the diagram
@@ -131,6 +131,37 @@ curl --fail --data-binary @compose.yaml -o diagram-dark.svg "http://localhost:30
 ```
 
 The endpoint has no authentication or rate limiting. If you enable it on a public host, put it behind something that does.
+
+## Adding Known Apps (self-hosted)
+
+The Known Apps live in [lib/compose/catalogue.ts](lib/compose/catalogue.ts). To add one, add an entry to `CATALOGUE`. Its key is the value for `compviz.icon`:
+
+```ts
+// a logo from Simple Icons (https://simpleicons.org): import it as si<Name>
+import { siSupabase } from "simple-icons";
+
+supabase: { name: "Supabase", category: "database", aliases: ["supabase/postgres"], logo: siSupabase },
+```
+
+- `name`: the display name.
+- `category`: one of the categories above. It sets the fallback icon and colour.
+- `aliases`: image repositories that match the app. An alias matches the whole repository (`node`) or its trailing segments (`oven/bun` matches `docker.io/oven/bun:1`), ignoring the tag and digest.
+- `logo`: optional. Without it, the node shows its category's icon.
+
+**A custom logo** doesn't have to come from Simple Icons. Any object with a `path` and a `hex` works. The `path` is the `d` attribute of one SVG `<path>` drawn in a 24×24 viewBox, and `hex` is its colour without the `#`:
+
+```ts
+acme: {
+  name: "Acme Gateway",
+  category: "proxy",
+  aliases: ["acme/gateway"],
+  logo: { path: "M12 2 2 22h20L12 2Zm0 5 6.5 13h-13L12 7Z", hex: "E11D48" },
+},
+```
+
+If your logo has several paths, merge them into one (most SVG editors and [SVGOMG](https://jakearchibald.github.io/svgomg/) can do this) and scale it to 24×24 first. A logo too dark or too light for a theme is drawn in the theme's text colour instead, so it stays visible.
+
+Then run `bun test`: it checks that the agent skill lists every Known App, so add the new key to the list in [skills/convert/SKILL.md](skills/convert/SKILL.md) too. The editor's autocomplete, the Guide and the conversion prompt pick up the new entry by themselves.
 
 ## Development
 
