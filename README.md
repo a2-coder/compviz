@@ -158,4 +158,4 @@ bun run build
 
 `bun dev` serves the app at [http://localhost:3000](http://localhost:3000). The Compose-to-diagram conversion in `lib/compose/` is pure and unit-tested; see [CLAUDE.md](CLAUDE.md) for the code layout and design rules.
 
-Copyright © 2026 Arjun Palakkazhi. All rights reserved.
+Copyright © 2026 Arjun Palakkazhi. All rights reserved. 
