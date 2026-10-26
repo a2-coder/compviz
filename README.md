@@ -93,6 +93,17 @@ npx skills add a2-coder/compviz
 
 Or copy [skills/convert/SKILL.md](skills/convert/SKILL.md) into your agent's skills folder, for example `.claude/skills/convert/SKILL.md` for a single project.
 
+## Live viewer count
+
+The header can show how many browser tabs have compviz open right now, using [Supabase Realtime Presence](https://supabase.com/docs/guides/realtime/presence). Nothing is stored, and no table is needed. It's off unless both variables are set at build time:
+
+```bash
+NEXT_PUBLIC_SUPABASE_URL=https://<project>.supabase.co
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=<publishable key>
+```
+
+With either one missing, the count isn't shown and no connection is opened. The publishable key is public, so the count is for show, not a trustworthy metric.
+
 ## SVG API (self-hosted)
 
 A self-hosted copy can expose an HTTP endpoint that turns a Compose file into the same SVG you get from the Export button, so you can generate diagrams from scripts or CI. **It's off by default**, and it isn't enabled on compviz.a2coder.dev. To turn it on, set `COMPVIZ_API=true` in the server's environment:

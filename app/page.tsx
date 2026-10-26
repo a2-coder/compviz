@@ -2,6 +2,7 @@ import { IconBrandGithub } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
 import { ComposeDiagram } from "@/components/compose-diagram";
 import { Guide } from "@/components/guide";
+import { LiveCount } from "@/components/live-count";
 import { Logo } from "@/components/logo";
 import { buttonVariants } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -23,6 +24,7 @@ export default function Home() {
           </div>
         </div>
         <div className="flex items-center gap-2">
+          <LiveCount />
           <Guide />
           <Tooltip>
             <TooltipTrigger

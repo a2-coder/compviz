@@ -35,6 +35,7 @@ Use **bun**, not npm/pnpm/yarn. (`bun build` is Bun's bundler; the package.json 
 - `app/layout.tsx`: loads JetBrains Mono via `next/font` as `--font-jetbrains-mono` and wraps the app in `TooltipProvider`.
 - `app/globals.css`: all design tokens (see below).
 - `components/ui/`: shadcn components, style `base-lyra` on **Base UI** (`@base-ui/react`), not Radix: custom triggers use the `render` prop, not `asChild`. `cn` comes from the `cn` package (re-exported by `lib/utils.ts`). `buttonVariants()` does not merge classes; wrap it in `cn()` when used on a non-Button element.
+- `components/live-count.tsx`: header count of open tabs via Supabase Realtime Presence (`supabase-js` loaded on demand); renders nothing unless `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` are set and the channel is subscribed.
 - `components/logo.tsx`: the logo (Tabler `IconHierarchy2`) for in-app use.
 
 ## Design system: a2coder labs
