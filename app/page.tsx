@@ -19,7 +19,15 @@ export default function Home() {
           <div className="flex flex-col">
             <h1 className="text-lg font-bold">compviz</h1>
             <p className="text-xs font-light text-muted-foreground">
-              by <span className="font-bold">@a2coder</span>
+              by{" "}
+              <a
+                href="https://www.a2coder.dev"
+                target="_blank"
+                rel="noreferrer"
+                className="font-bold hover:text-foreground hover:underline"
+              >
+                @a2coder
+              </a>
             </p>
           </div>
         </div>
